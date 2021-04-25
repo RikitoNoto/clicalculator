@@ -1,3 +1,6 @@
+
+require "./input_manager"
+require "./literal"
 # TODO: Write documentation for `Clicalculator`
 module Clicalculator
   VERSION = "0.1.0"
