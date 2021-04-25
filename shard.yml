@@ -1,0 +1,13 @@
+name: clicalculator
+version: 0.1.0
+
+authors:
+  - RikitoNoto <rikitonoto@gmail.com>
+
+targets:
+  clicalculator:
+    main: src/clicalculator.cr
+
+crystal: 1.0.0
+
+license: MIT
