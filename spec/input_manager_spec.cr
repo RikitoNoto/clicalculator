@@ -16,7 +16,7 @@ describe InputManager do
       input.formula.should eq "pathed a test2."
     end
 
-    it "should be inputs are a simble or a number." do
+    pending "should be inputs are a simble or a number." do
       expect_raises(Exception, "invalid formula.") do
         inputs = ["do", "not", "path", "test"]
         input = InputManager.new(inputs)
