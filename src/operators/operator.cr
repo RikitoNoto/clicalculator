@@ -1,5 +1,6 @@
 abstract class Operator
   @@symbol = ""
+  @@priority = 0
 
   def initialize(@left : Literal, @right : Literal)
   end

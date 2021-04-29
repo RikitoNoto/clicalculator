@@ -1,7 +1,7 @@
 require "./*"
 
 class OperatorManager
-  @@operators = {Add, Sub, Multiplied, Division}
+  @@operators = [Add, Sub, Multiplied, Division]
 
   def self.operators
     return @@operators
@@ -17,5 +17,25 @@ class OperatorManager
     end
 
     return Nil
+  end
+
+  def self.create_formula(formula : String) : Operator?
+    OperatorManager.operators.each do |op|
+      if(values = self.search_operator(op.symbol, formula))
+        return op.new(Literal.new(values[0]), Literal.new(values[1]))
+      end
+    end
+    return nil
+  end
+
+  def self.search_operator(symbol : String, formula : String)
+    symbol = Regex.escape(symbol)
+    pattern = Regex.new("(.*)(#{symbol})(.*)")
+    md = pattern.match(formula)
+    if(md)
+      return {md[1], md[3]}
+    else
+      return nil
+    end
   end
 end

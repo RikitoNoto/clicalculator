@@ -32,7 +32,7 @@ describe Operator do
     end
   end
 
-  describe "factory" do
+  describe "factory select" do
     it "should be have the subclass infomation of Add." do
       OperatorManager.operator_factory("+").should eq Add
     end
@@ -51,6 +51,26 @@ describe Operator do
 
     it "should be have no the subclass infomation of invalid class." do
       OperatorManager.operator_factory("none").should eq Nil
+    end
+  end
+
+  describe "creating operators" do
+    it "should be create the simple addition formula" do
+      operator = OperatorManager.create_formula("123+12")
+      operator.should be_a(Add)
+      if(operator.is_a?(Operator))
+        operator.left_value.should eq "123"
+        operator.right_value.should eq "12"
+      end
+    end
+
+    it "should be create the simple subtraction formula" do
+      operator = OperatorManager.create_formula("153-112")
+      operator.should be_a(Sub)
+      if(operator.is_a?(Operator))
+        operator.left_value.should eq "153"
+        operator.right_value.should eq "112"
+      end
     end
   end
 end
