@@ -1,7 +1,7 @@
 require "./operator"
 class Add < Operator
   @@symbol = "+"
-  @@priority = 15
+  @@priority = 20
 
   def calculate()
   end

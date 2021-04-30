@@ -63,8 +63,9 @@ class OperatorManager
 
       if(last_size.is_a?(Int32) && (size = op_info["size"]).is_a?(Int32))
 
-        if(op.priority <= last_priority && size < last_size)
+        if(op.priority < last_priority || (op.priority == last_priority &&size < last_size))
           last_priority = op.priority
+          last_size = size
           operator = op_info
         end
       end

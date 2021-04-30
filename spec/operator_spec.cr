@@ -58,5 +58,21 @@ describe Operator do
     it "should be create Operator from the formula what has two operators." do
       operator_factory_test("100*39+1", "100", "39+1").should be_a(Multiplied)
     end
+
+    it "should be create Operator from the formula what has two operators." do
+      operator_factory_test("100+39*1", "100+39", "1").should be_a(Multiplied)
+    end
+
+    it "should be create Operator from the formula what has two operators." do
+      operator_factory_test("100*39/1", "100", "39/1").should be_a(Multiplied)
+    end
+
+    it "should be create Operator from the formula what has two operators." do
+      operator_factory_test("100/39*1", "100", "39*1").should be_a(Division)
+    end
+
+    it "should be create Operator from the formula what has two operators." do
+      operator_factory_test("100-39/1", "100-39", "1").should be_a(Division)
+    end
   end
 end
