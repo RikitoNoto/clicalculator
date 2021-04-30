@@ -4,31 +4,19 @@ describe Operator do
 
   describe "initialize" do
     it "should be able to initialize Add class." do
-      plus = Add.new(Literal.new("123"),Literal.new("243"))
-
-      plus.left_value.should eq "123"
-      plus.right_value.should eq "243"
+      operator_initialize_test(Add, "123", "243")
     end
 
     it "should be able to initialize Sub class." do
-      minus = Sub.new(Literal.new("123"),Literal.new("243"))
-
-      minus.left_value.should eq "123"
-      minus.right_value.should eq "243"
+      operator_initialize_test(Sub, "342", "435")
     end
 
     it "should be able to initialize Multiplied class." do
-      multiplied = Multiplied.new(Literal.new("123"),Literal.new("243"))
-
-      multiplied.left_value.should eq "123"
-      multiplied.right_value.should eq "243"
+      operator_initialize_test(Multiplied, "243", "9087")
     end
 
     it "should be able to initialize Division class." do
-      division = Division.new(Literal.new("123"),Literal.new("243"))
-
-      division.left_value.should eq "123"
-      division.right_value.should eq "243"
+      operator_initialize_test(Division, "5032", "34567")
     end
   end
 
@@ -55,22 +43,20 @@ describe Operator do
   end
 
   describe "creating operators" do
-    it "should be create the simple addition formula" do
-      operator = OperatorManager.create_formula("123+12")
-      operator.should be_a(Add)
-      if(operator.is_a?(Operator))
-        operator.left_value.should eq "123"
-        operator.right_value.should eq "12"
-      end
+    it "should be create Operator from the simple addition formula" do
+      operator_factory_test("123+12", "123", "12").should be_a(Add)
     end
 
-    it "should be create the simple subtraction formula" do
-      operator = OperatorManager.create_formula("153-112")
-      operator.should be_a(Sub)
-      if(operator.is_a?(Operator))
-        operator.left_value.should eq "153"
-        operator.right_value.should eq "112"
-      end
+    it "should be create Operator from the simple subtraction formula" do
+      operator_factory_test("1233-132", "1233", "132").should be_a(Sub)
+    end
+
+    it "should be create Operator from the simple multiplied formula" do
+      operator_factory_test("155*60", "155", "60").should be_a(Multiplied)
+    end
+
+    it "should be create Operator from the formula what has two operators." do
+      operator_factory_test("100*39+1", "100", "39+1").should be_a(Multiplied)
     end
   end
 end

@@ -9,6 +9,10 @@ abstract class Operator
     return @@symbol
   end
 
+  def self.priority
+    return @@priority
+  end
+
   def left_value
     @left.value
   end
