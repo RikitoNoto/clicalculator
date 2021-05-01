@@ -8,6 +8,10 @@ class OperatorManager
   # all operators that this class management.
   @@operators = [Add, Sub, Multiplied, Division, Parenthese]
 
+  private def self.operators
+    return @@operators
+  end
+
   # the struct is used when OperatorManager exchange the operator infomations in between the methods.
   private struct OperatorInfo
     property operator_index, size, left_value, right_value, priority
@@ -17,8 +21,9 @@ class OperatorManager
     end
   end
 
-  private def self.operators
-    return @@operators
+  #if could not create operators from the receive formula,
+  #this class raise this exception.
+  class InvalidFormulaException < Exception
   end
 
   #search a class in operators from the symbol
@@ -43,7 +48,7 @@ class OperatorManager
   #this function create Operator from the formula string.
   #if the received formula is the invalid formula,
   #this function return nil.
-  def self.create_formula(formula : String) : Operator?
+  def self.create_formula(formula : String) : Operator
     matchs = [] of OperatorInfo
     self.operators.each_with_index do |op, i|
       if(values = self.search_operator(op, i, formula))
@@ -54,7 +59,7 @@ class OperatorManager
     if(op_info)
       return self.operators[op_info.operator_index].new(Literal.new(op_info.left_value), Literal.new(op_info.right_value))
     end
-    return nil
+    raise InvalidFormulaException.new("invalid formula : #{formula}")
   end
 
   private def self.search_operator(op : Class, op_index : Int32, formula : String) : OperatorInfo?

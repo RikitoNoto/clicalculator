@@ -1,5 +1,6 @@
 require "spec"
 require "../src/clicalculator"
+require "../src/operators/operator_manager"
 
 def operator_values_check(instance : Operator?, left_value : String, right_value : String)
   if(instance.is_a?(Operator))

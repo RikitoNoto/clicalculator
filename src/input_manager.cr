@@ -1,16 +1,16 @@
+require "./operators/operator_manager"
+
 class InputManager
-    @formula : String | Nil
+    @input_formula : String?
+    getter input_formula, formula
 
-
-    def initialize(@inputs : Array(String))
-        self.create_formula
+    def initialize(inputs : String)
+        @input_formula = inputs
+        @formula = OperatorManager.create_formula(inputs)
     end
 
-    def formula
-        return @formula
-    end
+    # def initialize(inputs : Array(String))
+    #     self.initialize(inputs.join(""))
+    # end
 
-    private def create_formula
-        @formula = @inputs.join("")
-    end
 end
