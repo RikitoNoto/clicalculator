@@ -57,6 +57,12 @@ class OperatorManager
     return nil
   end
 
+  # search a operator from the received formula and return the OperatorInfo.
+  # if the formula has no the received operator, this method return nil.
+  # ###params
+  # op: A class what inherited Operator class
+  # op_index: the index of op in class member operators.
+  # formula: the formula what search in.
   private def self.search_operator(op : Class, op_index : Int32, formula : String) : OperatorInfo?
     md = op.search(formula)
     if(md)
@@ -66,6 +72,14 @@ class OperatorManager
     end
   end
 
+
+  # select a operator in operators array.
+  # Selection condition is 
+  # ・the priority of the operator is highest.
+  # ・the operator is exist in most left.
+  # ・the operator is not in parenthese.
+  # ###params
+  # operators: the array of OperatorInfo. this method return one of these.
   private def self.operators_select(operators : Array) : OperatorInfo?
     last_operator = OperatorInfo.new()
 
@@ -87,6 +101,13 @@ class OperatorManager
     end
   end
 
+
+  # Checks if the operator is in parentheses.
+  # if not same the count of '(' and ')' in left_value,
+  # then the operator is in parentheses.
+  # if the left_value is nil then judge the operator is not in parentheses.
+  # ###params
+  # left_value: on the left value of the operator.
   private def self.in_parenthese?(left_value : String?) : Bool
     if(left_value)
       if(left_value.count('(') == left_value.count(')'))
