@@ -75,8 +75,16 @@ describe Operator do
       operator_factory_test("100-39/1", "100", "39/1").should be_a(Sub)
     end
 
+    it "should be create Operator of Parenthese from the formula." do
+      operator_factory_test("(100-39/1)", "100-39/1", "").should be_a(Parenthese)
+    end
+
     it "should be create Operator from the formula when it has the parentheses." do
       operator_factory_test("(100-39)/1", "(100-39)", "1").should be_a(Division)
+    end
+
+    it "should be create Operator from the formula when it has the parentheses." do
+      operator_factory_test("1/(100-39)", "1", "(100-39)").should be_a(Division)
     end
   end
 end

@@ -1,7 +1,8 @@
 class Literal
-    @value : String?
+    @value : String
     getter value
 
-    def initialize(@value : String?)
+    def initialize(value : String?)
+      @value = value ? value : ""
     end
 end

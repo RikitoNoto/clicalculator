@@ -6,16 +6,18 @@ require "./*"
 class OperatorManager
 
   # all operators that this class management.
-  @@operators = [Add, Sub, Multiplied, Division]
+  @@operators = [Add, Sub, Multiplied, Division, Parenthese]
 
   # the struct is used when OperatorManager exchange the operator infomations in between the methods.
   private struct OperatorInfo
-    property operator_index, size, left_value, right_value
-    def initialize(@operator_index : Int32, @size : Int32, @left_value : String?, @right_value : String?)
+    property operator_index, size, left_value, right_value, priority
+    @left_value : String?
+    @right_value : String?
+    def initialize(@operator_index = -1, @size = Int32::MIN, @left_value = nil, @right_value = nil, @priority = Int32::MIN)
     end
   end
 
-  def self.operators
+  private def self.operators
     return @@operators
   end
 
@@ -29,7 +31,7 @@ class OperatorManager
   #op = OperatorManager.operator_factory("+") # => op : Add instance
   #```
   def self.operator_factory(symbol : String) : Class
-    OperatorManager.operators.each do |op|
+    self.operators.each do |op|
       if(symbol == op.symbol)
         return op
       end
@@ -43,7 +45,7 @@ class OperatorManager
   #this function return nil.
   def self.create_formula(formula : String) : Operator?
     matchs = [] of OperatorInfo
-    OperatorManager.operators.each_with_index do |op, i|
+    self.operators.each_with_index do |op, i|
       if(values = self.search_operator(op, i, formula))
         matchs << values
       end
@@ -56,34 +58,43 @@ class OperatorManager
   end
 
   private def self.search_operator(op : Class, op_index : Int32, formula : String) : OperatorInfo?
-    symbol = Regex.escape(op.symbol)
-    pattern = Regex.new("(.*)(#{symbol})(.*)")
-    md = pattern.match(formula)
+    md = op.search(formula)
     if(md)
-      return OperatorInfo.new(op_index, md[1].size, md[1], md[3])
+      return OperatorInfo.new(op_index, md.size, md.left_value, md.right_value, op.priority)
     else
       return nil
     end
   end
 
   private def self.operators_select(operators : Array) : OperatorInfo?
-    last_priority = Int32::MIN
-    operator = OperatorInfo.new(-1, Int32::MIN, nil, nil)
-    last_size = operator.size
+    last_operator = OperatorInfo.new()
 
-    operators.each do |op_info|
+    operators.each do |op_info|#OperatorInfo
       op = self.operators[op_info.operator_index]
-      if(op.priority > last_priority || (op.priority == last_priority && op_info.size > last_size))
-        last_priority = op.priority
-        last_size = op_info.size
-        operator = op_info
+      if(self.in_parenthese?(op_info.left_value))
+        next
+      elsif(op.priority > last_operator.priority || (op.priority == last_operator.priority && op_info.size > last_operator.size))
+        #the operator is selected when its priority is higher than highest priority in current or
+        #its priority is same to highest priority in current and its order of appearence in the formula is faster than fastest in current.
+        last_operator = op_info
       end
     end
 
-    if(!operator.left_value && !operator.right_value && operator.size == Int32::MIN)
+    if(!last_operator.left_value && !last_operator.right_value && last_operator.size == Int32::MIN)
       return nil
     else
-      return operator
+      return last_operator
     end
+  end
+
+  private def self.in_parenthese?(left_value : String?) : Bool
+    if(left_value)
+      if(left_value.count('(') == left_value.count(')'))
+        return false
+      else
+        return true
+      end
+    end
+    return false
   end
 end
