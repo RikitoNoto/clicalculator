@@ -1,4 +1,5 @@
 require "./*"
+require "../calculator_exceptions"
 
 # This class allow you create operators from the formula.
 # This class never create as instance,
@@ -19,11 +20,6 @@ class OperatorManager
     @right_formula : String?
     def initialize(@operator_index = -1, @size = Int32::MIN, @left_formula = nil, @right_formula = nil, @priority = Int32::MIN)
     end
-  end
-
-  #if could not create operators from the receive formula,
-  #this class raise this exception.
-  class InvalidFormulaException < Exception
   end
 
   #search a class in operators from the symbol
@@ -59,7 +55,7 @@ class OperatorManager
     if(op_info)
       return self.operators[op_info.operator_index].new(Literal.new(op_info.left_formula), Literal.new(op_info.right_formula))
     end
-    raise InvalidFormulaException.new("invalid formula : #{formula}")
+    raise CalculatorExceptions::InvalidFormulaException.new("invalid formula : #{formula}")
   end
 
   private def self.search_operator(op : Class, op_index : Int32, formula : String) : OperatorInfo?

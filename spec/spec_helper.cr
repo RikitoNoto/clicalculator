@@ -22,3 +22,10 @@ def operator_factory_test(formula : String, left_formula : String, right_formula
   operator_values_check(instance, left_formula, right_formula)
   return instance
 end
+
+def input_manager_test(input : String, left_formula : String, right_formula : String) : InputManager
+  manager = InputManager.new(input)
+  manager.formula.left_formula.should eq left_formula
+  manager.formula.right_formula.should eq right_formula
+  return manager
+end
