@@ -14,10 +14,10 @@ class OperatorManager
 
   # the struct is used when OperatorManager exchange the operator infomations in between the methods.
   private struct OperatorInfo
-    property operator_index, size, left_value, right_value, priority
-    @left_value : String?
-    @right_value : String?
-    def initialize(@operator_index = -1, @size = Int32::MIN, @left_value = nil, @right_value = nil, @priority = Int32::MIN)
+    property operator_index, size, left_formula, right_formula, priority
+    @left_formula : String?
+    @right_formula : String?
+    def initialize(@operator_index = -1, @size = Int32::MIN, @left_formula = nil, @right_formula = nil, @priority = Int32::MIN)
     end
   end
 
@@ -57,7 +57,7 @@ class OperatorManager
     end
     op_info = self.operators_select(matchs)
     if(op_info)
-      return self.operators[op_info.operator_index].new(Literal.new(op_info.left_value), Literal.new(op_info.right_value))
+      return self.operators[op_info.operator_index].new(Literal.new(op_info.left_formula), Literal.new(op_info.right_formula))
     end
     raise InvalidFormulaException.new("invalid formula : #{formula}")
   end
@@ -65,7 +65,7 @@ class OperatorManager
   private def self.search_operator(op : Class, op_index : Int32, formula : String) : OperatorInfo?
     md = op.search(formula)
     if(md)
-      return OperatorInfo.new(op_index, md.size, md.left_value, md.right_value, op.priority)
+      return OperatorInfo.new(op_index, md.size, md.left_formula, md.right_formula, op.priority)
     else
       return nil
     end
@@ -76,7 +76,7 @@ class OperatorManager
 
     operators.each do |op_info|#OperatorInfo
       op = self.operators[op_info.operator_index]
-      if(self.in_parenthese?(op_info.left_value))
+      if(self.in_parenthese?(op_info.left_formula))
         next
       elsif(op.priority > last_operator.priority || (op.priority == last_operator.priority && op_info.size > last_operator.size))
         #the operator is selected when its priority is higher than highest priority in current or
@@ -85,16 +85,16 @@ class OperatorManager
       end
     end
 
-    if(!last_operator.left_value && !last_operator.right_value && last_operator.size == Int32::MIN)
+    if(!last_operator.left_formula && !last_operator.right_formula && last_operator.size == Int32::MIN)
       return nil
     else
       return last_operator
     end
   end
 
-  private def self.in_parenthese?(left_value : String?) : Bool
-    if(left_value)
-      if(left_value.count('(') == left_value.count(')'))
+  private def self.in_parenthese?(left_formula : String?) : Bool
+    if(left_formula)
+      if(left_formula.count('(') == left_formula.count(')'))
         return false
       else
         return true

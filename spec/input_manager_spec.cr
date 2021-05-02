@@ -26,16 +26,29 @@ describe InputManager do
       inputs = "123+235"
       input = InputManager.new(inputs)
       input.formula.should be_a Add
-      input.formula.left_value.should eq "123"
-      input.formula.right_value.should eq "235"
+      input.formula.left_formula.should eq "123"
+      input.formula.right_formula.should eq "235"
     end
 
     it "should be inputs become operators." do
       inputs = "5*123+235"
       input = InputManager.new(inputs)
       input.formula.should be_a Add
-      input.formula.left_value.should eq "5*123"
-      input.formula.right_value.should eq "235"
+      input.formula.left_formula.should eq "5*123"
+      input.formula.right_formula.should eq "235"
+    end
+
+    it "should be inputs become operators." do
+      inputs = "5*123+235"
+      input = InputManager.new(inputs)
+      input.formula.should be_a Add
+      input.formula.left_operator.should be_a Multiplied
+      input.formula.right_operator.should be_a Nil
+      operator = input.formula.left_operator
+      if(operator.is_a?(Multiplied))
+        operator.left_formula.should eq "5"
+        operator.right_formula.should eq "123"
+      end
     end
   end
 end

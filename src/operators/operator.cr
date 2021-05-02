@@ -3,8 +3,8 @@ abstract class Operator
   @@priority = Int32::MIN
 
   struct SearchResult
-    property left_value, right_value, symbol, size
-    def initialize(@left_value : String?, @right_value : String?, @symbol : String, @size : Int32)
+    property left_formula, right_formula, symbol, size
+    def initialize(@left_formula : String?, @right_formula : String?, @symbol : String, @size : Int32)
     end
   end
 
@@ -32,13 +32,22 @@ abstract class Operator
     pattern = Regex.new("(.*)(#{symbol})(.*)")
   end
 
-  def left_value
-    @left.value
+  def left_formula : String
+    @left.formula
   end
 
-  def right_value
-    @right.value
+  def right_formula : String
+    @right.formula
   end
+
+  def left_operator : Operator?
+    @left.operator
+  end
+
+  def right_operator : Operator?
+    @right.operator
+  end
+
 
   abstract def calculate
 

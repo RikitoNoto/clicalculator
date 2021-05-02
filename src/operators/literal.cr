@@ -1,8 +1,18 @@
 class Literal
-    @value : String
-    getter value
+    @formula: String
+    @operator : Operator?
+    getter formula, operator
 
-    def initialize(value : String?)
-      @value = value ? value : ""
+    def initialize(formula : String?)
+      @formula= formula ? formula : ""
+      self.create_operator
+    end
+
+    def create_operator
+      begin
+        @operator = OperatorManager.create_formula(@formula)
+      rescue
+        @operator = nil
+      end
     end
 end
