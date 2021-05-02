@@ -1,4 +1,5 @@
 require "./*"
+require "../calculator_exceptions"
 
 # This class allow you create operators from the formula.
 # This class never create as instance,
@@ -8,17 +9,17 @@ class OperatorManager
   # all operators that this class management.
   @@operators = [Add, Sub, Multiplied, Division, Parenthese]
 
-  # the struct is used when OperatorManager exchange the operator infomations in between the methods.
-  private struct OperatorInfo
-    property operator_index, size, left_value, right_value, priority
-    @left_value : String?
-    @right_value : String?
-    def initialize(@operator_index = -1, @size = Int32::MIN, @left_value = nil, @right_value = nil, @priority = Int32::MIN)
-    end
-  end
-
   private def self.operators
     return @@operators
+  end
+
+  # the struct is used when OperatorManager exchange the operator infomations in between the methods.
+  private struct OperatorInfo
+    property operator_index, size, left_formula, right_formula, priority
+    @left_formula : String?
+    @right_formula : String?
+    def initialize(@operator_index = -1, @size = Int32::MIN, @left_formula = nil, @right_formula = nil, @priority = Int32::MIN)
+    end
   end
 
   #search a class in operators from the symbol
@@ -43,7 +44,7 @@ class OperatorManager
   #this function create Operator from the formula string.
   #if the received formula is the invalid formula,
   #this function return nil.
-  def self.create_formula(formula : String) : Operator?
+  def self.create_formula(formula : String) : Operator
     matchs = [] of OperatorInfo
     self.operators.each_with_index do |op, i|
       if(values = self.search_operator(op, i, formula))
@@ -52,9 +53,9 @@ class OperatorManager
     end
     op_info = self.operators_select(matchs)
     if(op_info)
-      return self.operators[op_info.operator_index].new(Literal.new(op_info.left_value), Literal.new(op_info.right_value))
+      return self.operators[op_info.operator_index].new(Literal.new(op_info.left_formula), Literal.new(op_info.right_formula))
     end
-    return nil
+    raise CalculatorExceptions::InvalidFormulaException.new("invalid formula : #{formula}")
   end
 
   # search a operator from the received formula and return the OperatorInfo.
@@ -66,7 +67,7 @@ class OperatorManager
   private def self.search_operator(op : Class, op_index : Int32, formula : String) : OperatorInfo?
     md = op.search(formula)
     if(md)
-      return OperatorInfo.new(op_index, md.size, md.left_value, md.right_value, op.priority)
+      return OperatorInfo.new(op_index, md.size, md.left_formula, md.right_formula, op.priority)
     else
       return nil
     end
@@ -85,7 +86,7 @@ class OperatorManager
 
     operators.each do |op_info|#OperatorInfo
       op = self.operators[op_info.operator_index]
-      if(self.in_parenthese?(op_info.left_value))
+      if(self.in_parenthese?(op_info.left_formula))
         next
       elsif(op.priority > last_operator.priority || (op.priority == last_operator.priority && op_info.size > last_operator.size))
         #the operator is selected when its priority is higher than highest priority in current or
@@ -94,7 +95,7 @@ class OperatorManager
       end
     end
 
-    if(!last_operator.left_value && !last_operator.right_value && last_operator.size == Int32::MIN)
+    if(!last_operator.left_formula && !last_operator.right_formula && last_operator.size == Int32::MIN)
       return nil
     else
       return last_operator

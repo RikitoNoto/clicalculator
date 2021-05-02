@@ -6,7 +6,7 @@ describe Literal do
   describe "initialize" do
     it "should be able to initialize." do
       literal = Literal.new("1243*3254")
-      literal.value.should eq "1243*3254"
+      literal.formula.should eq "1243*3254"
     end
   end
 end
