@@ -40,4 +40,17 @@ class Literal
         raise CalculatorExceptions::DontExpectedException.new("do not expected exception.")
       end
     end
+
+    def value
+      value = @value
+      operator = @operator
+
+      if(value)
+        return value
+      elsif(operator)
+        return operator.calculate
+      else
+        raise CalculatorExceptions::DontExpectedException.new("do not expected exception.")
+      end
+    end
 end

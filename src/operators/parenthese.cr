@@ -16,6 +16,11 @@ class Parenthese < Operator
     pattern = /^\((.*)\)$/
   end
 
-  def calculate()
+
+  def calculate
+    left_value = self.left_value
+    if(left_value)
+      return left_value
+    end
   end
 end
