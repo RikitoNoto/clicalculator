@@ -87,4 +87,46 @@ describe Operator do
       operator_factory_test("1/(100-39)", "1", "(100-39)").should be_a(Division)
     end
   end
+
+  describe "calculating" do
+    it "should be answer the correct value." do
+      operator = operator_factory_test("1+1", "1", "1")
+      operator.calculate.should eq 2
+    end
+
+    it "should be answer the correct value." do
+      operator = operator_factory_test("1-1", "1", "1")
+      operator.calculate.should eq 0
+    end
+
+    it "should be answer the correct value." do
+      operator = operator_factory_test("1*1", "1", "1")
+      operator.calculate.should eq 1
+    end
+
+    it "should be answer the correct value." do
+      operator = operator_factory_test("1/1", "1", "1")
+      operator.calculate.should eq 1
+    end
+
+    it "should be answer the correct value." do
+      operator = operator_factory_test("1+5*3", "1", "5*3")
+      operator.calculate.should eq 16
+    end
+
+    it "should be answer the correct value." do
+      operator = operator_factory_test("(1+5)*3", "(1+5)", "3")
+      operator.calculate.should eq 18
+    end
+
+    it "should be answer the correct value." do
+      operator = operator_factory_test("3/5-2", "3/5", "2")
+      operator.calculate.should eq 3/5-2
+    end
+
+    it "should be answer the correct value." do
+      operator = operator_factory_test("3/(5-2)", "3", "(5-2)")
+      operator.calculate.should eq 3/(5-2)
+    end
+  end
 end
