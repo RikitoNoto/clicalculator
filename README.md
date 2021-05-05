@@ -1,18 +1,16 @@
-# clicalculator
-
-TODO: Write a description here
+# CLIcalculator
+This application allow you easily to calculate.
+If you use this application, you can do it like this.
+```
+$calc 1+1
+2
+$calc "(1+1)*2"
+4
+```
 
 ## Installation
+excecute make file.
 
-TODO: Write installation instructions here
-
-## Usage
-
-TODO: Write usage instructions here
-
-## Development
-
-TODO: Write development instructions here
 
 ## Contributing
 
