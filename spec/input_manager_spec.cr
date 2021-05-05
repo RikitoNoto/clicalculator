@@ -3,17 +3,17 @@ require "./spec_helper"
 describe InputManager do
 
   describe "formula" do
-    # it "should be inputs become one input." do
-    #   inputs = ["6+54", "/", "65", "0"]
-    #   input = InputManager.new(inputs)
-    #   input.input_formula.should eq "6+54/650"
-    # end
+    it "should be inputs become one input." do
+      inputs = {"6+54", "/", "65", "0"}
+      input = InputManager.new(*inputs)
+      input.input_formula.should eq "6+54/650"
+    end
 
-    # it "should be inputs become one input." do
-    #   inputs = ["123", "+", "235", "*", "56"]
-    #   input = InputManager.new(inputs)
-    #   input.input_formula.should eq "123+235*56"
-    # end
+    it "should be inputs become one input." do
+      inputs = {"123", "+", "235", "*", "56"}
+      input = InputManager.new(*inputs)
+      input.input_formula.should eq "123+235*56"
+    end
 
     it "should be inputs become no space." do
       inputs = "5 + 5"
