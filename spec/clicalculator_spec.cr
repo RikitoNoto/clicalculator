@@ -9,6 +9,6 @@ describe Clicalculator do
   it "should be output result to the standard output." do
     io = IO::Memory.new
     Clicalculator::Calculator.calculate(io, "1+1")
-    io.to_s.should eq "2"
+    io.to_s.should eq "2\n"
   end
 end
